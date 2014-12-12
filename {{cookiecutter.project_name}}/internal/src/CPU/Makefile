@@ -7,14 +7,14 @@ LDFLAGS		= -lm
 
 OBJ		= {{cookiecutter.stem_name}}.o
 
-all:		run	
+all:		run
 
 $(EXEC):	$(OBJ)
 		$(CC) $(CFLAGS) -o $@ $(OBJ) $(LDFLAGS)
 
 run:		$(EXEC)
 
-.INTERMEDIATE: $(OBJ)
+.INTERMEDIATE:	$(OBJ)
 
 clean:
 		rm $(EXEC)	
