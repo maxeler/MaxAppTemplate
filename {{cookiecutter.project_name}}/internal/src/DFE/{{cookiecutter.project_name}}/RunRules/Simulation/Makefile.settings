@@ -1,0 +1,17 @@
+# --- User's custom definitions
+
+# ---
+
+MAXCOMPILER_QUOTE   := $(shell printf %q "$(MAXCOMPILERDIR)")
+
+RUNRULE_ARGS        := 
+RUNRULE_RUNENV      := MAXELEROSDIR="$(MAXCOMPILERDIR)/lib/maxeleros-sim" LD_LIBRARY_PATH="$(MAXCOMPILERDIR)/lib/maxeleros-sim/lib:$$LD_LIBRARY_PATH" SLIC_CONF="use_simulation=azaid{{cookiecutter.stem_name}};"  
+RUNRULE_MAXFILES    := {{cookiecutter.stem_name}}.max  
+RUNRULE_MAXFILES_H  := {{cookiecutter.stem_name}}.h 
+RUNRULE_CFLAGS      := 
+RUNRULE_LDFLAGS     := 
+
+TARGET_EXEC         := {{cookiecutter.stem_name}}
+TARGET_LIBRARY      := 
+
+

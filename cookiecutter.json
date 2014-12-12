@@ -1,0 +1,11 @@
+{
+    "project_name": "example_project",
+    "enable_cpu_code": true,
+    "enable_engine_code": true,
+    "dfe_model": "Vectis",
+    "manager_class": "Standard",
+    "optimize_for_mpcx": false,
+    "stem_name": "ExampleProject",
+    "slic_interaface": "basic_static"
+}
+
