@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void add(int ticks, int32_t *in, int scalar, int32_t *s);
+void add(int ticks, int32_t *x, int32_t *y, int scalar, int32_t *s);
 
 int main(void)
 {
@@ -19,18 +19,10 @@ int main(void)
                 y[i] = random() % 100;
         }
 
-        int32_t *in = malloc(sizeBytes*2);
-
-        // Rearrange data for streaming
-        for(int i = 0; i < size; i++) {
-            in[i*2] = x[i];
-            in[(i*2)+1] = y[i];
-        }
-
-        int ticks = size*2;
+        int ticks = size;
 
         // Call
-        add(ticks, in, scalar, s);
+        add(ticks, x, y, scalar, s);
 
         return 0;
 }
