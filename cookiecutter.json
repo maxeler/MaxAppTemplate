@@ -1,5 +1,8 @@
 {
     "project_name": "example_project",
+    "project_description": "An example project.",
+    "author_name": "John Doe",
+    "author_email": "jdoe@maxeler.com",
     "dfe_model": "Vectis",
     "manager_class": "Standard",
     "optimize_for_mpcx": false,
