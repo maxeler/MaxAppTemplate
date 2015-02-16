@@ -4,7 +4,7 @@ ifndef RUNRULE
   $(error The RUNRULE environment variable is not set. Usage: 'make RUNRULE="<RunRule>"')
 endif
 
-RUNRULE_DIR = ../RunRules/$(RUNRULE)
+RUNRULE_DIR = ../runrules/$(RUNRULE)
 include $(RUNRULE_DIR)/Makefile.settings
 
 all: build

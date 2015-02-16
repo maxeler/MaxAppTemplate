@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>{{cookiecutter.project_name}}_EngineCode</name>
+	<name>{{cookiecutter.project_name}}_DFE_SRC</name>
 	<comment></comment>
 	<manageMaxCompiler>true</manageMaxCompiler>
 	<manageMaxGenFD>false</manageMaxGenFD>

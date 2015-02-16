@@ -21,7 +21,7 @@ clean distclean startsim stopsim: Makefile.rules
 
 Makefile.rules: Makefile.settings
 
-Makefile.settings: RunRules.settings
+Makefile.settings: runrules.settings
 	java -jar "$(MAXCOMPILERDIR)/lib/MaxIDE/projectAdmin.jar" -u ../.. Simulation
 
 .PHONY: all build clean installer_no_dependencies
