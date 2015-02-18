@@ -1,0 +1,35 @@
+########################################################
+#               Custom configurations                  #
+########################################################
+
+
+EXEC_NAME: 
+ {{cookiecutter.cpu_project_name}} 
+
+SOURCES:
+ - {{cookiecutter.cpu_project_name}}CpuCode
+
+DFE_PRJ:
+ - {{cookiecutter.stem_name}}
+
+PLATFORM: 
+ {{cookiecutter.dfe_model}} 
+
+C_PRJ:
+ 
+CFLAGS:
+ - -std=gnu99 
+ - -finstrument-functions
+ - -fopenmp
+ - -fPIC
+ - -W
+ - -Wall
+
+LDFLAGS:
+ - -fopenmp
+
+MACROS:
+ - param_numTimesteps=param_numSteps
+ - param_numTimeseries=param_numVariables
+ - instream_in_data_pairs=instream_in_variable_pair
+ - correlation_maxNumTimeseries=correlation_maxNumVariables
