@@ -54,9 +54,10 @@ def compile(build_dir='build', flags=cflags):
 		for maxfile in os.listdir(max_dir):
 			if maxfile.endswith(".max"):	
 				max_abs = os.path.join(max_dir, os.path.basename(maxfile))
-				slic_abs = os.path.join(sapi_dir,os.path.splitext(maxfile)[0] + ".o")
+				slic_abs = os.path.join(sapi_dir,os.path.splitext(maxfile)[0] + ".o") 
 				if os.path.isfile(max_abs):
-					run ('sliccompile',  max_abs, slic_abs)  
+					run ('sliccompile',  max_abs, slic_abs)
+					run ('sliccompile', '-t', 'cheader', '-d', sapi_dir, max_abs)
 
 
 	# Include all SAPI directories
@@ -64,6 +65,9 @@ def compile(build_dir='build', flags=cflags):
 
 	# Include C projects directories
 	inc_c = ['-I' + os.path.join(prj_root, "PLATFORMS", platform, "MAPI", c_prj) for c_prj in C_PRJs]
+
+	# Include headers of this CPU project
+	inc = ['-Iinclude']
 
 	# Adding -D in front of every macro
 	macros = ['-D' + macro for macro in MACROS]
@@ -73,7 +77,7 @@ def compile(build_dir='build', flags=cflags):
 	
 	# Compile source code
 	for source in sources:
-		run ('gcc', '-c', os.path.join('src',source+'.c'), '-o', os.path.join(build_dir, source+'.o'), flags, inc_sapi, inc_c, macros)
+		run ('gcc', '-c', os.path.join('src',source+'.c'), '-o', os.path.join(build_dir, source+'.o'), flags, inc, inc_sapi, inc_c, inc, macros)
 		
 
 def link (build_dir='build', flags=ldflags):
