@@ -1,0 +1,19 @@
+#########################################################
+#                  RunRule Settings                     #
+#########################################################
+
+
+boardModel:
+ {{cookiecutter.dfe_model}}
+
+enableMPXC:
+ false
+
+maxfileName:
+ {{cookiecutter.stem_name}}
+
+mainClass:
+ {{cookiecutter.stem_name|lower}}.{{cookiecutter.stem_name}}Manager
+
+remoteExecution:
+ false
