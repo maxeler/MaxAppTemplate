@@ -29,7 +29,4 @@ LDFLAGS:
  - -fopenmp
 
 MACROS:
- - param_numTimesteps=param_numSteps
- - param_numTimeseries=param_numVariables
- - instream_in_data_pairs=instream_in_variable_pair
- - correlation_maxNumTimeseries=correlation_maxNumVariables
+
