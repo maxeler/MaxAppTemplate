@@ -14,6 +14,8 @@ with open ('settings.yaml', 'r') as settings:
 	doc = yaml.load(settings)
 
 MAXCOMPILERDIR = os.environ['MAXCOMPILERDIR']
+os.environ['MAXSOURCEDIRS']='src'
+os.environ['MAXCOMPILER_BUILD_CONF_FILE'] = '.MaxCompiler_build.conf'
 
 MAXCOMPILER = 'maxjc'
 MAXDEBUG = 'source,lines,vars'
