@@ -1,0 +1,118 @@
+#!/usr/bin/env python
+
+
+###########################################################
+#               Initialize from settings                  #
+###########################################################
+
+import os
+from fabricate import *
+import yaml
+
+with open ('settings.yaml', 'r') as settings:
+	doc = yaml.load(settings)
+
+EXEC_NAME = doc ['EXEC_NAME']
+
+sources = doc ['SOURCES']
+
+DFE_PRJs = doc ['DFE_PRJ']
+
+platform = doc ['PLATFORM']
+
+C_PRJs = doc ['C_PRJ']
+if C_PRJs == None:	C_PRJs = []
+
+cflags = doc ['CFLAGS']
+ldflags = doc ['LDFLAGS']
+ 
+MACROS = doc ['MACROS']
+if MACROS == None:  MACROS = []
+
+prj_root = os.path.dirname(os.path.dirname(os.path.dirname(os.getcwd()))) + '/' 
+setup(dirs=['.', prj_root])
+
+
+###########################################################
+#                       Targets                           #
+###########################################################
+
+def build():
+	compile()
+	link()	
+
+
+def compile(build_dir='build', flags=cflags):
+
+	# Include SLiC headers
+	flags = flags + shell("slic-config", "--cflags").strip().replace('\'', '').split()
+	
+	# Compile .max files into .o files
+	for dfe in DFE_PRJs:
+		max_dir = os.path.join(prj_root, "PLATFORMS", platform, "Maxfiles", dfe)	
+		sapi_dir = os.path.join(prj_root,"PLATFORMS",platform,"SAPI", dfe)
+		for maxfile in os.listdir(max_dir):
+			if maxfile.endswith(".max"):	
+				max_abs = os.path.join(max_dir, os.path.basename(maxfile))
+				slic_abs = os.path.join(sapi_dir,os.path.splitext(maxfile)[0] + ".o") 
+				if os.path.isfile(max_abs):
+					run ('sliccompile',  max_abs, slic_abs)
+					run ('sliccompile', '-t', 'cheader', '-d', sapi_dir, max_abs)
+
+
+	# Include all SAPI directories
+	inc_sapi = ['-I' + os.path.join(prj_root, "PLATFORMS", platform, "SAPI", dfe) for dfe in DFE_PRJs]
+
+	# Include C projects directories
+	inc_c = ['-I' + os.path.join(prj_root, "PLATFORMS", platform, "MAPI", c_prj) for c_prj in C_PRJs]
+
+	# Include headers of this CPU project
+	inc = ['-Iinclude']
+
+	# Adding -D in front of every macro
+	macros = ['-D' + macro for macro in MACROS]
+	
+	# Create buld directory
+	run ('mkdir', build_dir)
+	
+	# Compile source code
+	for source in sources:
+		run ('gcc', '-c', os.path.join('src',source+'.c'), '-o', os.path.join(build_dir, source+'.o'), flags, inc, inc_sapi, inc_c, inc, macros)
+		
+
+def link (build_dir='build', flags=ldflags):
+
+	# Include SLiC libraries
+	flags = flags + shell("slic-config", "--libs").strip().replace('\'', '').split()
+
+	# Object files
+	objects = [os.path.join(build_dir, s+'.o') for s in sources]
+	
+	slic_objects = []
+	for dfe in DFE_PRJs:
+		sapi_dir = os.path.join(prj_root, "PLATFORMS", platform,"SAPI", dfe)
+		for obj in os.listdir(sapi_dir):
+			if obj.endswith(".o"):
+				slic_abs = os.path.join(sapi_dir, os.path.basename(obj))
+				slic_objects.append(slic_abs)
+
+	mapi_libs = []
+	for c_prj in C_PRJs:
+		c_dir = os.path.join(prj_root, "PLATFORMS", platform, "MAPI", c_prj)
+		for obj in os.listdir(c_dir):
+			if obj.endswith(".a"):
+				c_abs = os.path.join(c_dir, os.path.basename(obj))
+				mapi_libs.append(c_abs)
+
+	# Link object file and make an executable
+	run ('gcc', objects, slic_objects, mapi_libs, '-o', os.path.join(build_dir,EXEC_NAME), flags)	
+	
+	# Making new directory for this project and copying executable
+	bin_dir = os.path.join(prj_root, "PLATFORMS", platform, 'binaries', os.path.basename(os.getcwd()))
+	run ('mkdir', bin_dir)
+	run ('cp', os.path.join(build_dir,EXEC_NAME), bin_dir)
+
+def clean():
+	autoclean()
+
+main ()

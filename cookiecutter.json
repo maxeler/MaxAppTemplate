@@ -7,6 +7,7 @@
     "manager_class": "Standard",
     "optimize_for_mpcx": false,
     "stem_name": "ExampleProject",
+	"cpu_project_name": "example_cpu_project",
     "slic_interaface": "basic_static"
 }
 

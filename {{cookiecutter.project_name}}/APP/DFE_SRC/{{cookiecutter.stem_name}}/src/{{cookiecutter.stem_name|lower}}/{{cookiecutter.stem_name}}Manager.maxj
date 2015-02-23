@@ -1,0 +1,118 @@
+{% if cookiecutter.manager_class|lower == "custom" %}
+package {{cookiecutter.stem_name|lower}};
+
+import com.maxeler.maxcompiler.v2.managers.BuildConfig;
+import com.maxeler.maxcompiler.v2.managers.custom.CustomManager;
+import com.maxeler.maxcompiler.v2.managers.custom.blocks.KernelBlock;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.CPUTypes;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.EngineInterface;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.InterfaceParam;
+
+public class {{cookiecutter.stem_name}}Manager extends CustomManager {
+
+	private static final String s_kernelName = "{{cookiecutter.stem_name}}Kernel";
+	
+	public {{cookiecutter.stem_name}}Manager({{cookiecutter.stem_name}}EngineParameters engineParameters) {
+		super(engineParameters);
+
+		KernelBlock block = addKernel(new {{cookiecutter.stem_name}}Kernel(makeKernelParameters(s_kernelName)));
+
+		for (String inputName: block.getAllInputs())
+			block.getInput(inputName).connect(addStreamFromCPU(inputName));
+		for (String outputName: block.getAllOutputs())
+			addStreamToCPU(outputName).connect(block.getOutput(outputName));
+
+		createSLiCinterface(modeDefault());
+
+		configBuild(engineParameters);
+	}
+
+	private static EngineInterface modeDefault() {
+		EngineInterface engine_interface = new EngineInterface();
+		CPUTypes   type = CPUTypes.INT32;
+		int        size = type.sizeInBytes();
+
+		InterfaceParam  a    = engine_interface.addParam("A", CPUTypes.INT);
+		InterfaceParam  N    = engine_interface.addParam("N", CPUTypes.INT);
+
+		engine_interface.setScalar(s_kernelName, "a", a);
+
+		engine_interface.setTicks(s_kernelName, N);
+		engine_interface.setStream("x",   type, N * size);
+		engine_interface.setStream("y",   type, N * size);
+		engine_interface.setStream("s", type, N * size);
+		return engine_interface;
+	}
+	
+	private void configBuild({{cookiecutter.stem_name}}EngineParameters params) {
+		BuildConfig buildConfig = getBuildConfig();
+		buildConfig.setMPPRCostTableSearchRange(params.getMPPRStartCT(), params.getMPPREndCT());
+		buildConfig.setMPPRParallelism(params.getMPPRThreads());
+		buildConfig.setMPPRRetryNearMissesThreshold(params.getMPPRRetryThreshold());
+	}
+	
+	public static void main(String[] args) {
+		{{cookiecutter.stem_name}}Manager manager = new {{cookiecutter.stem_name}}Manager(new {{cookiecutter.stem_name}}EngineParameters(args));
+		manager.build();
+	}
+}
+{% else %}
+package {{cookiecutter.stem_name|lower}};
+
+import static com.maxeler.maxcompiler.v2.managers.standard.Manager.link;
+
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.managers.BuildConfig;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.CPUTypes;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.EngineInterface;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.InterfaceParam;
+import com.maxeler.maxcompiler.v2.managers.standard.IOLink.IODestination;
+import com.maxeler.maxcompiler.v2.managers.standard.Manager;
+
+public class {{cookiecutter.stem_name}}Manager {
+
+	private static final String s_kernelName = "{{cookiecutter.stem_name}}Kernel";
+
+	public static void main(String[] args) {
+		{{cookiecutter.stem_name}}EngineParameters params = new {{cookiecutter.stem_name}}EngineParameters(args);
+		Manager manager = new Manager(params);
+		Kernel kernel   = new {{cookiecutter.stem_name}}Kernel(manager.makeKernelParameters(s_kernelName));
+		manager.setKernel(kernel);
+		manager.setIO(
+			link("x",   IODestination.CPU),
+			link("y",   IODestination.CPU),
+			link("s", IODestination.CPU));
+
+		manager.createSLiCinterface(interfaceDefault());
+		
+		configBuild(manager, params);
+		
+		manager.build();
+	}
+
+	private static EngineInterface interfaceDefault() {
+		EngineInterface engine_interface = new EngineInterface();
+		CPUTypes   type = CPUTypes.INT32;
+		int        size = type.sizeInBytes();
+
+		InterfaceParam  a    = engine_interface.addParam("A", CPUTypes.INT);
+		InterfaceParam  N    = engine_interface.addParam("N", CPUTypes.INT);
+
+		engine_interface.setScalar(s_kernelName, "a", a);
+
+		engine_interface.setTicks(s_kernelName, N);
+		engine_interface.setStream("x",   type, N * size);
+		engine_interface.setStream("y",   type, N * size);
+		engine_interface.setStream("s", type, N * size);
+		return engine_interface;
+	}
+	
+	private static void configBuild(Manager manager, {{cookiecutter.stem_name}}EngineParameters params) {
+		manager.setEnableStreamStatusBlocks(false);
+		BuildConfig buildConfig = manager.getBuildConfig();
+		buildConfig.setMPPRCostTableSearchRange(params.getMPPRStartCT(), params.getMPPREndCT());
+		buildConfig.setMPPRParallelism(params.getMPPRThreads());
+		buildConfig.setMPPRRetryNearMissesThreshold(params.getMPPRRetryThreshold());
+	}
+}
+{% endif %}

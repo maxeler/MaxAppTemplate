@@ -1,0 +1,82 @@
+#!/usr/bin/env python
+
+
+import os
+import contextlib
+import yaml
+
+from fabricate import *
+from os.path import join, isfile, splitext
+from shutil import rmtree, copytree, ignore_patterns
+
+
+with open ('settings.yaml', 'r') as settings:
+	doc = yaml.load(settings)
+
+MAXCOMPILERDIR = os.environ['MAXCOMPILERDIR']
+os.environ['MAXSOURCEDIRS']='src'
+os.environ['MAXCOMPILER_BUILD_CONF_FILE'] = '.MaxCompiler_build.conf'
+
+MAXCOMPILER = 'maxjc'
+MAXDEBUG = 'source,lines,vars'
+MAXSOURCE = '1.6'
+MAXTARGET = '1.6'
+MAXCLASSPATH = ['%s/lib/MaxCompiler.jar' % MAXCOMPILERDIR,
+				'/network-raid/opt/maxq/maxq-ctl.jar',
+				'jcommon-1.0.17.jar',
+				'jfreechart-1.0.14.jar']
+
+MAXDESTDIR = 'bin'
+MAXSRCDIR = 'src'
+
+COMPILER = '/network-raid/opt/jdk1.6.0_02/jre/bin/java'
+X = 'mx12288m'
+CLASSPATH = MAXCLASSPATH[:-2] + ['bin']
+
+MODEL = doc ['boardModel']
+if MODEL=='SIMULATION':
+	TARGET = 'DFE_SIM'
+	MODEL = 'MAIA'
+else:
+	TARGET = 'DFE'
+
+MAXFILENAME = doc ['maxfileName']
+SOURCE = doc ['mainClass']
+
+
+@contextlib.contextmanager
+def cd(newPath):
+	"""Python snippet to CD into a directory"""
+	savedPath = os.getcwd()
+	os.chdir(newPath)
+	yield
+	os.chdir(savedPath)
+
+def clean():
+	try:
+		rmtree('./bin')
+	except:
+		pass
+
+def init():
+	with cd('src'):
+		ignoref = lambda d, fs: [f for f in fs if isfile(join(d,f)) and f[-3:] != 'ucf']
+		copytree('.', '../bin/', ignore=ignoref)
+
+def compile():
+	run(MAXCOMPILER, '-g:%s' % MAXDEBUG, '-source', '%s' % MAXSOURCE,
+		'-target', '%s' % MAXTARGET, '-classpath', '%s' % ':'.join(MAXCLASSPATH),
+		'-d', '%s' % MAXDESTDIR, MAXSRCDIR)
+
+def maxfile():
+	run(COMPILER, '-X%s' % X, '-classpath', '%s' % ':'.join(CLASSPATH),
+		SOURCE, 'target=%s' % TARGET, 'maxFileName=%s' % MAXFILENAME, 'DFEModel=%s' % MODEL)
+
+def build():
+	clean()
+	init()
+	compile()
+	maxfile()
+    
+main()
+
