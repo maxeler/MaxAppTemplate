@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<maxCompilerManager version="2">
+<enginePart internalEngineSubproject="{{cookiecutter.project_name}}_EngineCode" isSrcBin="false" isUseDefaultSelected="false" outputLocation="/{{cookiecutter.project_name}}_EngineCode/bin" projectName="{{cookiecutter.project_name}}"/>
+<cpuPart internalCpuSubproject="{{cookiecutter.project_name}}_CPUCode"/>
+<watchedFiles/>
+</maxCompilerManager>

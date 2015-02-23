@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="{{cookiecutter.project_name}}_DFE_SRC_run_script" default="all" basedir="../../DFE_SRC">
+<project name="{{cookiecutter.project_name}}_EngineCode_run_script" default="all" basedir="../../EngineCode">
     <property environment="env"/>
     <condition property="maxcompilerdirpath" value="${env.MAXCOMPILERJCP}">
         <isset property="env.MAXCOMPILERJCP"/>
@@ -14,7 +14,7 @@
     </condition>
     <target name="all" depends="runresult"/>
     <target name="build">
-        <ant inheritAll="false" antfile="../runrules/Simulation/{{cookiecutter.stem_name}}_Build.xml"/>
+        <ant inheritAll="false" antfile="../RunRules/Simulation/{{cookiecutter.stem_name}}_Build.xml"/>
     </target>
     <target name="run" depends="build">
         <condition property="args" value="">
@@ -28,12 +28,12 @@
             <arg line="${args}"/>
             <classpath>
                 <pathelement path="${env.ANT_MAXELER_INTERNAL_MAXIDE_JARS}"/>
-                <pathelement path="../runrules/Simulation/dist/bin"/>
+                <pathelement path="../RunRules/Simulation/dist/bin"/>
                 <pathelement path="${maxcompilerdirpath}"/>
                 <pathelement path="${EnvClassPath}"/>
             </classpath>
         </java>
-        <exec executable="${env.MAXCOMPILERDIR}/lib/MaxIDE/copyBuildResults.sh" newenvironment="false" dir="../runrules/Simulation">
+        <exec executable="${env.MAXCOMPILERDIR}/lib/MaxIDE/copyBuildResults.sh" newenvironment="false" dir="../RunRules/Simulation">
             <arg value="-p"/>
             <arg value="Simulation"/>
         </exec>
@@ -48,14 +48,14 @@
         <fail if="java.run.fail" message="java run stage failed."/>
     </target>
     <target name="clean">
-        <ant inheritAll="false" antfile="../runrules/Simulation/{{cookiecutter.stem_name}}_Build.xml" target="clean"/>
+        <ant inheritAll="false" antfile="../RunRules/Simulation/{{cookiecutter.stem_name}}_Build.xml" target="clean"/>
     </target>
     <target name="jar" depends="build">
-        <mkdir dir="../runrules/Simulation/dist/jar"/>
-        <copy includeemptydirs="false" todir="../runrules/Simulation/dist/jar">
-            <fileset dir="../runrules/Simulation/dist/bin" excludes="**/*.uad, **/*.ucd, **/*.uld, **/*.upd, **/*.udd, **/*.uod, **/*.usd, **/*.utd, **/*.uud, **/*.odd, **/*.ead, **/*.ecd, **/*.eld, **/*.epd, **/*.edd, **/*.eod, **/*.esd, **/*.etd, **/*.eud, **/*.urd*.uml, **/*.ecore, **/*.launch, **/*.java, **/*.maxj, **/package.html"/>
+        <mkdir dir="../RunRules/Simulation/dist/jar"/>
+        <copy includeemptydirs="false" todir="../RunRules/Simulation/dist/jar">
+            <fileset dir="../RunRules/Simulation/dist/bin" excludes="**/*.uad, **/*.ucd, **/*.uld, **/*.upd, **/*.udd, **/*.uod, **/*.usd, **/*.utd, **/*.uud, **/*.odd, **/*.ead, **/*.ecd, **/*.eld, **/*.epd, **/*.edd, **/*.eod, **/*.esd, **/*.etd, **/*.eud, **/*.urd*.uml, **/*.ecore, **/*.launch, **/*.java, **/*.maxj, **/package.html"/>
         </copy>
-        <jar destfile="{{cookiecutter.stem_name}}Manager.jar" basedir="../runrules/Simulation/dist/jar">
+        <jar destfile="{{cookiecutter.stem_name}}Manager.jar" basedir="../RunRules/Simulation/dist/jar">
             <manifest>
                 <attribute name="Main-Class" value="{{cookiecutter.stem_name|lower}}.{{cookiecutter.stem_name}}Manager"/>
             </manifest>
