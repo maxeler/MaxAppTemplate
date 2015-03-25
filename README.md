@@ -3,94 +3,147 @@
 MaxAppTemplate
 ==============
 
-This software is all you need to package application source code for the [Maxeler Eco-System](http://appgallery.maxeler.com/).
+This software has everything you need to package exciting new applications  for the [Maxeler Eco-System](http://appgallery.maxeler.com/).
 
 
 Installation
 ------------
 
-MaxAppTemplate uses [cookiecutter](https://github.com/audreyr/cookiecutter) for bootstrapping projects using templates. You can install cookiecutter using the standard Python package managers. The recommended way to install `cookiecutter` is by using `pip`. Please open a `terminal` and type:
+This software uses [cookiecutter](https://github.com/audreyr/cookiecutter) to work. 
+
+The recommended way to install `cookiecutter` is by using `pip` - A Python package manager that comes pre-installed for Python 2.7.9 and later (on the python2 series), and Python 3.4 and later (on the python3 series). 
+
+If you happen to have an older version of Python, the easiest way to install `pip` is by opening a `terminal` and typing the following:
+
+    $ wget https://bootstrap.pypa.io/get-pip.py
+    $ [sudo] python get-pip.py
+
+Once we have sorted out `pip`, it is time to install `cookiecutter`. Open a `terminal` and type:
 
     $ [sudo] pip install cookiecutter
 
-However, if you do not have `pip` installed, you can use `easy_install` like so: 
+If it works, typing `cookiecutter` in your terminal will print:
 
-    $ [sudo] easy_install cookiecutter
+    $ cookiecutter
+    cookiecutter: error: too few arguments
 
 Usage
 -----
 
-Once you have installed `cookiecutter`, simply `cd` to the directory where you want put your new application and type:
+With `cookiecutter` out of our way, simply `cd` to the directory where you want put your new application and type:
 
     $ cookiecutter https://github.com/alixedi/MaxAppTemplate
 
-`cookiecutter` will cache a copy of the Maxeler app template to the `~/.cookiecutters` directory so that you do not have to download it again. 
+If everything goes right, this will kick-off an interactive Q&A session. At the end of this Q&A session, you will have a Maxler app with the correct directory structure, placeholders for documentation and license as well as working skeleton source code, ready for uploading to the Maxeler eco-system. 
 
-This will be followed by an interactive session at the end of which, you will have a Maxler app set-up with the correct directory structure, placeholders for documentation and license as well as skeleton code, ready for uploading to the Maxeler eco-system.
+Following is an example Q&A session. Plesae note that each question has a default answer. If you want to go with the default answer, simply press return without typing anything:
 
-Each question will have a default answer. To use the default answer, simply press `return` without answering it. Following is a brief description of each question:
+1. Name of your project:
 
-* **project_name**: Please type the name of the project.
-* **project_description**: Please type a short description of the project.
-* **author_name**: Please type in your name.
-* **author_email**: Please type in a valid email address.
-* **dfe_model**: What is the target DFE model for your project? Valid options for this inlcude (TODO)
-* **manager_class**: Which manager would you like to employ? Valid options include (TODO)
-* **optimize_for_mpcx**: Would you like to optimize the build for MPCX?
-* **stem_nae**: Please enter a stem for naming the files and classes in your project. The source code will generated automatically and will work out of the box.
-* **slic_interface**: Please specify the SLiC interface that you would like to use. Valid options for this include `basic_static`, `advanced_static` and `dynamic`.
+        project_name (default is "example_project")? MyProject ↵
 
-Your applications has been set up and includes skeleton code that should work out of the box. Following is a brief description of some of the sub-directories and files:
+2. A brief description of your project:
 
-* **ORIG**: This directory contains the original CPU implementation of your project with the `make` file to build it like so:
+        project_description (default is "An example project.")? This is an exciting new app. ↵
 
+3. Your name:
+
+        author_name (default is "John Doe")? Ali Zaidi ↵
+
+4. Your email address:
+
+        author_email (default is "jdoe@maxeler.com")? ↵
+
+5. The model of the DFE card that your app supports. Please note that this is just for bootstrapping, later, you can decide to add/change/delete this using MaxIDE. Valid options include `Vectis`, `VectisLite`, `Coria`, `Maia`, `Galava`, `Isca`, `Max2B` and `Max2C`:
+
+        dfe_model (default is "Vectis")? Maia ↵
+
+6. The `KernelManager` type. There are 2 options for this: `Standard` and `Custom`. The former offers simplicity while the latter offer control:
+
+        manager_class (default is "Standard")? ↵
+        
+7. Whether you would like to turn-on `MPCX` optimizations:
+
+        optimize_for_mpcx (default is "False")? ↵
+
+8. Stem for naming the files, classes, functions etc in your project. For instance, if we select `MyProject` as the `stem_name`, the generated project will have the following naming conventions:
+
+    * Package: `myproject`
+    * Kernel class: `MyProjectKernel`
+    * EnginerParamters class: `MyProjectEngineParamters`
+    * Manager class: `MyProjectManager`
+    * Max file: `MyProject`
+
+  Here is the example:
+  
+        stem_name (default is "ExampleProject")? MyProject ↵
+
+9. SLiC interface type. You will have to choose between `basic_static`, `advanced_static` and `dynamic` in the order of increasing power as well as complexity.
+
+        slic_interaface (default is "basic_static")? advanced_static ↵
+
+At this point, you will see a message like so:
+
+    Generating the project...
+    Done.
+
+Your shiny new app with the correct directory structure, placeholders for documentation and license as well as working skeleton source code is now ready for uploading to the Maxeler eco-system. 
+
+App Structure
+-------------
+
+Lets look at some of the sub-directories and files in your shiny new app:
+
+###ORIG
+This directory contains the original CPU implementation of your project along with the `make` file to build it like so:
 
     $ cd ORIG
-
-
     $ make
 
-* **SPLIT**: This directory contains the split implementation of your project. The split implementation runs on the CPU. However, the code that will eventually run on the DFE will be separated into a stub function placed in a separate file. The stub function will have the same signature as the DFE implementation, hence forcing you into re-engineer the CPU code to support the new interface. The re-engineering may involve changing the data access patterns to support streaming implementation. Like the original CPU implementation, the split implementationa also comes packaged with the `make` file for building it like so:
+###SPLIT
+This directory contains the split implementation of your project. The split implementation still runs on the CPU. However, the code that will eventually run on the DFE is identifed and isolated in a function. This function has the same  signature as the DFE implementation. As a result, it forces the re-engineering of the CPU code as well. The re-engineering may involve changing the data access patterns to support streaming implementation. 
 
+Like the original CPU implementation, the split implementationa also comes packaged with the `make` file for building it like so:
 
     $ cd SPLIT
-
     $ make
     
-* **APP**: This directory contains a valid Maxeler project - including the necessary scaffolding to run out of the box such as skeleton source code, build automation scripts as well as the header files and libraries. Lets try and test if everything is in order by building the simulated version of our project:
-
+###APP
+This directory contains a valid Maxeler project that would build and run out of the box like so:
 
     $ cd APP/CPUCode
-
     $ make --runrule=Simulation
     
-* **DOCS**: This directory contains the documentation in [markdown](daringfireball.net/projects/markdown/syntax
-) format that is easy to write and compiles to pretty `html`.
-* **TESTS**: This directory contains the automated tests for your application. 
-* **PLATFORMS**: This directory will contain the compiled binaries and libraries.
-* **LICENSE**: What is the license for your code? If you want a release your source code as FOSS, you may benefit from using [Palal](https://github.com/alixedi/palal) - a nifty little tool that will help you choose the right FOSS license.
-* **README**: Contains a single page documentation that serves as the title page of your project on GitHub.
+###DOCS
+This directory contains the documentation in [markdown](daringfireball.net/projects/markdown/syntax
+) format.
 
-Now that we have a fully-functional app, you ready to replace the skeleton source code with your own stuff, write the tests and documentation and upload the project to [GitHub](http://github.com) - A popular service for hosting source code using the [Git](http://git-scm.com) version control system.
+###TESTS
+This directory contains the automated tests for your application. 
 
-You will need to [register](https://help.github.com/articles/signing-up-for-a-new-github-account/) on GitHub first. After which, you will need to [create a new repository](https://help.github.com/articles/creating-a-new-repository/
-) and follow the instructions on your repository home page to upload the project to GitHub. 
+###PLATFORMS
+This directory will contain the compiled binaries and libraries.
 
-Generally, these instructions comprise of the following steps:
+###LICENSE
+If you want to release your source code as FOSS, you may benefit from using [Palal](https://github.com/alixedi/palal) - a nifty little tool that will help you choose the right license.
 
-    $ cd <your_app_directory_root>
-    $ git init
-    $ git add --all
-    $ git commi -m "First Commit"
-    $ git remote add origin https://github.com/<your_github_username>/<your_repository_name>.git
-    $ git push -u origin master
+###README
+Contains a single page documentation that serves as the title page of your project on GitHub.
 
-Enjoy!
 
-How to help
------------
+Uploading to GitHub
+-------------------
+Now that we have a fully-functional app, we can replace the placeholders with our own stuff, write some tests and documentation and upload the project to [GitHub](http://github.com). GitHub is a popular source code hosting service based on  the [Git](http://git-scm.com) version control system. Here is what you need to do:
 
-* If you think this is missing something, please open an issue.
+1. [Register](https://help.github.com/articles/signing-up-for-a-new-github-account/) on GitHub. 
+2. [Create a new repository](https://help.github.com/articles/creating-a-new-repository/) 
+3. Follow the instructions on your repository home page for uploading the source code. They go something like this:
 
-* If you think you can help with some issue, please fork, modify, commit and submit a pull-request.
+        $ cd <your_app_directory_root>
+        $ git init
+        $ git add --all
+        $ git commi -m "First Commit"
+        $ git remote add origin https://github.com/<your_github_username>/<your_repository_name>.git
+        $ git push -u origin master
 
+~~~
