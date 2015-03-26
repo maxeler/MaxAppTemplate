@@ -17,7 +17,7 @@ This installation guide will assume that you have `Python` installed on your sys
 
 If you have `Python` installed on your system, you will get something like:
 
-    $ Python <version_number>
+    Python <version_number>
     
 If you do not have `Python` on your system, you can get it for free from the [official website](https://www.python.org/downloads/release/python-279/). I would recommend installing version `2.7.x` because it is supported by a majority of software. Please note that MaxAppTemplate supports all `Python` versions starting from `2.6`. 
 
