@@ -39,9 +39,9 @@ If, on the other hand, you get a `command not found` error or something simillar
 
 Now that we have sorted out `Python` and `pip`, it is time to install [cookiecutter](https://github.com/audreyr/cookiecutter) - A cool FOSS project for bootstrapping projects from templates. 
 
-The recommended way to install `cookiecutter` is by using `pip`. Here is how to do it:
+The recommended way to install `cookiecutter` is by using `pip`. We will install version 0.9.0 because it supports Python 2.6. Here is how to do it:
 
-    $ [sudo] pip install cookiecutter
+    $ [sudo] pip install cookiecutter==0.9.0
 
 If everything has worked, typing `cookiecutter` in your terminal will print:
 
