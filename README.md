@@ -9,22 +9,43 @@ This software has everything you need to package exciting new applications  for 
 Installation
 ------------
 
-This software uses [cookiecutter](https://github.com/audreyr/cookiecutter) to work. 
+###Python
 
-The recommended way to install `cookiecutter` is by using `pip` - A Python package manager that comes pre-installed for Python 2.7.9 and later (on the python2 series), and Python 3.4 and later (on the python3 series). 
+This installation guide will assume that you have `Python` installed on your system. This is a reasonable assumption because these days `Python` comes pre-installed with `Linux` as well as `MacOS`. If you are not sure, open up a `terminal` and type the following:
 
-If you happen to have an older version of Python, the easiest way to install `pip` is by opening a `terminal` and typing the following:
+    $ python -V
+
+If you have `Python` installed on your system, you will get something like:
+
+    $ Python <version_number>
+    
+If you do not have `Python` on your system, you can get it for free from the [official website](https://www.python.org/downloads/release/python-279/). I would recommend installing version `2.7.x` because it is supported by a majority of software. Please note that MaxAppTemplate supports all `Python` versions starting from `2.6`. 
+
+###Pip
+
+`Pip` is a package manager for `Python` that comes pre-installed for Python 2.7.9 and later (on the python2 series), and Python 3.4 and later (on the python3 series). If you happen to have a relatively recent version of `Python`, typing `pip` in a `terminal` should give you a standard CLI help text:
+
+    $ pip
+    Usage:   
+      pip <command> [options]
+
+If, on the other hand, you get a `command not found` error or something simillar, we need to install `pip`. This is simple enough:
 
     $ wget https://bootstrap.pypa.io/get-pip.py
     $ [sudo] python get-pip.py
 
-Once we have sorted out `pip`, it is time to install `cookiecutter`. Open a `terminal` and type:
+###Cookiecutter
+
+Now that we have sorted out `Python` and `pip`, it is time to install [cookiecutter](https://github.com/audreyr/cookiecutter) - A cool FOSS project for bootstrapping projects from templates. 
+
+The recommended way to install `cookiecutter` is by using `pip`. Here is how to do it:
 
     $ [sudo] pip install cookiecutter
 
-If it works, typing `cookiecutter` in your terminal will print:
+If everything has worked, typing `cookiecutter` in your terminal will print:
 
     $ cookiecutter
+    usage: cookiecutter [-h] [--no-input] [-c CHECKOUT] [-V] [-v] input_dir
     cookiecutter: error: too few arguments
 
 Usage
@@ -34,9 +55,9 @@ With `cookiecutter` out of our way, simply `cd` to the directory where you want 
 
     $ cookiecutter https://github.com/alixedi/MaxAppTemplate
 
-If everything goes right, this will kick-off an interactive Q&A session. At the end of this Q&A session, you will have a Maxler app with the correct directory structure, placeholders for documentation and license as well as working skeleton source code, ready for uploading to the Maxeler eco-system. 
+If everything goes right, this will kick-off an interactive `Q&A` session. At the end of this `Q&A` session, you will have a Maxler app with the correct directory structure, placeholders for documentation and license as well as working skeleton source code, ready for uploading to the Maxeler eco-system. 
 
-Following is an example Q&A session. Plesae note that each question has a default answer. If you want to go with the default answer, simply press return without typing anything:
+Following is an example `Q&A` session for your reference. Plesae note that each question has a default answer. If you want to go with the default answer, simply press return without typing anything:
 
 1. Name of your project:
 
@@ -146,4 +167,3 @@ Now that we have a fully-functional app, we can replace the placeholders with ou
         $ git remote add origin https://github.com/<your_github_username>/<your_repository_name>.git
         $ git push -u origin master
 
-~~~
