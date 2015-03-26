@@ -28,6 +28,7 @@ If you do not have `Python` on your system, you can get it for free from the [of
     $ pip
     Usage:   
       pip <command> [options]
+    ...
 
 If, on the other hand, you get a `command not found` error or something simillar, we need to install `pip`. This is simple enough:
 
