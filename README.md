@@ -164,7 +164,7 @@ Now that we have a fully-functional app, we can replace the placeholders with ou
         $ cd <your_app_directory_root>
         $ git init
         $ git add --all
-        $ git commi -m "First Commit"
+        $ git commit -m "First Commit"
         $ git remote add origin https://github.com/<your_github_username>/<your_repository_name>.git
         $ git push -u origin master
 
