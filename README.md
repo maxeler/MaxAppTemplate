@@ -48,6 +48,10 @@ If everything has worked, typing `cookiecutter` in your terminal will print:
     $ cookiecutter
     usage: cookiecutter [-h] [--no-input] [-c CHECKOUT] [-V] [-v] input_dir
     cookiecutter: error: too few arguments
+    
+N.B. It has been reported that for some combination of the various moving parts we have a `Python` package called `unitest2` does not get installed. If this happens, type in the following:
+
+    $ [sudo] pip install unittest2
 
 Usage
 -----
