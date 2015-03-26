@@ -5,7 +5,7 @@
     "author_email": "jdoe@maxeler.com",
     "dfe_model": "Vectis",
     "manager_class": "Standard",
-    "optimize_for_mpcx": false,
+    "optimize_for_mpcx": "false",
     "stem_name": "ExampleProject",
     "slic_interaface": "basic_static"
 }
