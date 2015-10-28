@@ -30,7 +30,7 @@ If you do not have `Python` on your system, you can get it for free from the [of
       pip <command> [options]
     ...
 
-If, on the other hand, you get a `command not found` error or something simillar, we need to install `pip`. This is simple enough:
+If, on the other hand, you get a `command not found` error or something similar, we need to install `pip`. This is simple enough:
 
     $ wget https://bootstrap.pypa.io/get-pip.py
     $ [sudo] python get-pip.py
@@ -60,9 +60,9 @@ With `cookiecutter` out of our way, simply `cd` to the directory where you want 
 
     $ cookiecutter https://github.com/alixedi/MaxAppTemplate
 
-If everything goes right, this will kick-off an interactive `Q&A` session. At the end of this `Q&A` session, you will have a Maxler app with the correct directory structure, placeholders for documentation and license as well as working skeleton source code, ready for uploading to the Maxeler eco-system. 
+If everything goes right, this will kick-off an interactive `Q&A` session. At the end of this `Q&A` session, you will have a Maxeler app with the correct directory structure, placeholders for documentation and license as well as working skeleton source code, ready for uploading to the Maxeler eco-system. 
 
-Following is an example `Q&A` session for your reference. Plesae note that each question has a default answer. If you want to go with the default answer, simply press return without typing anything:
+Following is an example `Q&A` session for your reference. Please note that each question has a default answer. If you want to go with the default answer, simply press return without typing anything:
 
 1. Name of your project:
 
@@ -96,7 +96,7 @@ Following is an example `Q&A` session for your reference. Plesae note that each 
 
     * Package: `myproject`
     * Kernel class: `MyProjectKernel`
-    * EnginerParamters class: `MyProjectEngineParamters`
+    * EnginerParameters class: `MyProjectEngineParameters`
     * Manager class: `MyProjectManager`
     * Max file: `MyProject`
 
@@ -106,7 +106,7 @@ Following is an example `Q&A` session for your reference. Plesae note that each 
 
 9. SLiC interface type. You will have to choose between `basic_static`, `advanced_static` and `dynamic` in the order of increasing power as well as complexity.
 
-        slic_interaface (default is "basic_static")? advanced_static ↵
+        slic_interface (default is "basic_static")? advanced_static ↵
 
 At this point, you will see a message like so:
 
@@ -127,9 +127,9 @@ This directory contains the original CPU implementation of your project along wi
     $ make
 
 ###SPLIT
-This directory contains the split implementation of your project. The split implementation still runs on the CPU. However, the code that will eventually run on the DFE is identifed and isolated in a function. This function has the same  signature as the DFE implementation. As a result, it forces the re-engineering of the CPU code as well. The re-engineering may involve changing the data access patterns to support streaming implementation. 
+This directory contains the split implementation of your project. The split implementation still runs on the CPU. However, the code that will eventually run on the DFE is identified and isolated in a function. This function has the same  signature as the DFE implementation. As a result, it forces the re-engineering of the CPU code as well. The re-engineering may involve changing the data access patterns to support streaming implementation. 
 
-Like the original CPU implementation, the split implementationa also comes packaged with the `make` file for building it like so:
+Like the original CPU implementation, the split implementation also comes packaged with the `make` file for building it like so:
 
     $ cd SPLIT
     $ make
